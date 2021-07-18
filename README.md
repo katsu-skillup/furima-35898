@@ -25,7 +25,6 @@
 
 | Column                 | Type       | Options                        |
 | -----------------------| ---------- | ------------------------------ |
-| item_image             |            | ActiveStorage                  |
 | item_name              | string     | null: false                    |
 | item_info              | text       | null: false                    |
 | item_category_id       | integer    | null: false                    |
