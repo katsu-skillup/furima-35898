@@ -17,12 +17,12 @@ RSpec.describe User, type: :model do
         expect(@user).to be_valid
       end
 
-      it 'last_nameが全角漢字であれば登録できる' do
+      it 'last_nameが漢字であれば登録できる' do
         @user.last_name = '試験'
         expect(@user).to be_valid
       end
       
-      it 'last_nameが全角かなであれば登録できる' do
+      it 'last_nameがかなであれば登録できる' do
         @user.last_name = 'しけん'
         expect(@user).to be_valid
       end
@@ -32,12 +32,12 @@ RSpec.describe User, type: :model do
         expect(@user).to be_valid
       end
 
-      it 'first_nameが全角漢字であれば登録できる' do
+      it 'first_nameが漢字であれば登録できる' do
         @user.first_name = '試験'
         expect(@user).to be_valid
       end
       
-      it 'firdt_nameが全角かなであれば登録できる' do
+      it 'firdt_nameがかなであれば登録できる' do
         @user.first_name = 'しけん'
         expect(@user).to be_valid
       end
@@ -100,6 +100,18 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include 'Password is invalid. Include both letters and numbers'
       end
+
+      it 'passwordは数字のみであれば登録できない' do
+        @user.password = '000000'
+        @user.valid?
+        expect(@user.errors.full_messages).to include 'Password is invalid. Include both letters and numbers'
+      end
+
+      it 'passwordはアルファベットのみであれば登録できない' do
+        @user.password = 'aaaaaa'
+        @user.valid?
+        expect(@user.errors.full_messages).to include 'Password is invalid. Include both letters and numbers'
+      end
       
       it 'passwordが存在しても、password_confirmationが空では登録できない' do
         @user.password_confirmation = ''
@@ -113,8 +125,14 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).to include "Last name can't be blank"
       end
 
-      it 'last_nameには全角（漢字、かな、カナ)以外登録できない' do
+      it 'last_nameにはアルファベットを登録できない' do
         @user.last_name = 'test'
+        @user.valid?
+        expect(@user.errors.full_messages).to include 'Last name is invalid. Input full-width characters'
+      end
+
+      it 'last_nameには半角カナは登録できない' do
+        @user.last_name = 'ﾃｽﾄ'
         @user.valid?
         expect(@user.errors.full_messages).to include 'Last name is invalid. Input full-width characters'
       end
@@ -125,8 +143,14 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).to include "First name can't be blank"
       end
 
-      it 'first_nameには全角（漢字、かな、カナ)以外登録できない' do
+      it 'first_nameにはアルファベットは登録できない' do
         @user.first_name = 'test'
+        @user.valid?
+        expect(@user.errors.full_messages).to include 'First name is invalid. Input full-width characters'
+      end
+
+      it 'first_nameには半角カナは登録できない' do
+        @user.first_name = 'ﾃｽﾄ'
         @user.valid?
         expect(@user.errors.full_messages).to include 'First name is invalid. Input full-width characters'
       end
@@ -137,8 +161,26 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).to include "Last name kana can't be blank"
       end
 
-      it 'last_name_kanaには全角カナ以外登録できない' do
+      it 'last_name_kanaには漢字は登録できない' do
+        @user.last_name_kana = '試験'
+        @user.valid?
+        expect(@user.errors.full_messages).to include 'Last name kana is invalid. Input full-width katakana characters'
+      end
+
+      it 'last_name_kanaには全角かなは登録できない' do
         @user.last_name_kana = 'てすと'
+        @user.valid?
+        expect(@user.errors.full_messages).to include 'Last name kana is invalid. Input full-width katakana characters'
+      end
+
+      it 'last_name_kanaには半角カナは登録できない' do
+        @user.last_name_kana = 'ﾃｽﾄ'
+        @user.valid?
+        expect(@user.errors.full_messages).to include 'Last name kana is invalid. Input full-width katakana characters'
+      end
+
+      it 'last_name_kanaにはアルファベットは登録できない' do
+        @user.last_name_kana = 'test'
         @user.valid?
         expect(@user.errors.full_messages).to include 'Last name kana is invalid. Input full-width katakana characters'
       end
@@ -149,8 +191,26 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).to include "First name kana can't be blank"
       end
 
-      it 'first_name_kanaには全角カナ以外登録できない' do
+      it 'first_name_kanaには漢字は登録できない' do
+        @user.first_name_kana = '試験'
+        @user.valid?
+        expect(@user.errors.full_messages).to include 'First name kana is invalid. Input full-width katakana characters'
+      end
+
+      it 'first_name_kanaには全角かなは登録できない' do
         @user.first_name_kana = 'てすと'
+        @user.valid?
+        expect(@user.errors.full_messages).to include 'First name kana is invalid. Input full-width katakana characters'
+      end
+
+      it 'first_name_kanaには半角カナは登録できない' do
+        @user.first_name_kana = 'ﾃｽﾄ'
+        @user.valid?
+        expect(@user.errors.full_messages).to include 'First name kana is invalid. Input full-width katakana characters'
+      end
+
+      it 'first_name_kanaにはアルファベットは登録できない' do
+        @user.first_name_kana = 'test'
         @user.valid?
         expect(@user.errors.full_messages).to include 'First name kana is invalid. Input full-width katakana characters'
       end
