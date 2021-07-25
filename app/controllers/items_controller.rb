@@ -42,8 +42,10 @@ class ItemsController < ApplicationController
   end
 
   def cheack_authority
-    unless Item.find(params[:id]).user_id == current_user.id
-      redirect_to root_path
+    if user_signed_in?
+      if Item.find(params[:id]).user_id != current_user.id
+        redirect_to root_path
+      end
     end
   end     
 end
