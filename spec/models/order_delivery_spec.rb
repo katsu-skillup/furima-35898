@@ -14,12 +14,17 @@ RSpec.describe OrderDelivery, type: :model do
         expect(@order_delivery).to be_valid
       end
       it 'buildingが空でも保存できる' do
-        @order_delivery.building = nil
+        @order_delivery.building = ''
         expect(@order_delivery).to be_valid
       end
     end
 
     context '購入情報が保存できない場合' do
+      it 'tokenが空だと保存ができない' do
+        @order_delivery.token = ''
+        @order_delivery.valid?
+        expect(@order_delivery.errors.full_messages).to include "Token can't be blank"
+      end 
       it 'postal_codeが空だと保存できない' do
         @order_delivery.postal_code = ''
         @order_delivery.valid?
