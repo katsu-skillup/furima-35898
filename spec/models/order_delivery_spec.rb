@@ -85,6 +85,16 @@ RSpec.describe OrderDelivery, type: :model do
         @order_delivery.valid?
         expect(@order_delivery.errors.full_messages).to include 'Phone number is invalid. Input only number' 
       end
+      it 'ユーザーが紐づいていなければ保存できない' do
+        @order_delivery.user_id = nil
+        @order_delivery.valid?
+        expect(@order_delivery.errors.full_messages).to include "User can't be blank"
+      end
+      it '商品が紐づいていなければ保存できない' do
+        @order_delivery.item_id = nil
+        @order_delivery.valid?
+        expect(@order_delivery.errors.full_messages).to include "Item can't be blank"
+      end
     end
   end
 end
