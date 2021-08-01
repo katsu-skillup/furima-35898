@@ -1,12 +1,17 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :cheack_authority
+  before_action :order_check
+  before_action :set_item, only: [:index, :create]
+ 
 
   def index
-    @item = Item.find(params[:item_id])
+    set_item
     @order_delivery = OrderDelivery.new
   end
 
   def create
-    @item = Item.find(params[:item_id])
+    set_item
     @order_delivery = OrderDelivery.new(delivery_params)
     if @order_delivery.valid?
       pay_item
@@ -31,5 +36,22 @@ class OrdersController < ApplicationController
       card: delivery_params[:token],
       currency: 'jpy'
     )
-  end    
+  end
+  
+  def cheack_authority
+    if Item.find(params[:item_id]).user_id == current_user.id
+      redirect_to root_path
+    end
+  end
+  
+  def order_check
+    if Item.find(params[:item_id]).order != nil
+      redirect_to root_path
+    end
+  end
+
+  def set_item
+    @item = Item.find(params[:item_id])
+  end
+
 end
