@@ -40,7 +40,7 @@ class OrdersController < ApplicationController
   end
 
   def cheack_authority
-    if set_item.user_id == current_user.id || Item.find(params[:item_id]).order != nil
+    if @item.user_id == current_user.id || @item.order != nil
       redirect_to root_path
     end
   end
