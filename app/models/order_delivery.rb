@@ -10,7 +10,7 @@ class OrderDelivery
     validates :prefecture_id, numericality: { other_than: 1 , message: "can't be blank" }
     validates :city
     validates :address
-    validates :phone_number, length: { in: 10..11, message: "is too short" } ,format: {with: /\A[0-9]\d{10,11}\z/, message: "is invalid. Input only number" }
+    validates :phone_number, length: { in: 10..11, message: "should be 10 or 11-digit number" } ,format: {with: /\A[0-9]\d{10,11}\z/, message: "is invalid. Input only number" }
   end
  
   def save
