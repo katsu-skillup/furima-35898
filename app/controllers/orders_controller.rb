@@ -1,7 +1,6 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :cheack_authority
-  before_action :order_check
   before_action :set_item, only: [:index, :create]
  
 
@@ -37,13 +36,7 @@ class OrdersController < ApplicationController
   end
   
   def cheack_authority
-    if Item.find(params[:item_id]).user_id == current_user.id
-      redirect_to root_path
-    end
-  end
-  
-  def order_check
-    if Item.find(params[:item_id]).order != nil
+    if Item.find(params[:item_id]).user_id == current_user.id || Item.find(params[:item_id]).order != nil
       redirect_to root_path
     end
   end
