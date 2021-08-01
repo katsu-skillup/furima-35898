@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_item, only: [:index, :create, :cheack_authority]
   before_action :cheack_authority
-  before_action :set_item, only: [:index, :create]
  
 
   def index
@@ -34,15 +34,15 @@ class OrdersController < ApplicationController
       currency: 'jpy'
     )
   end
-  
-  def cheack_authority
-    if Item.find(params[:item_id]).user_id == current_user.id || Item.find(params[:item_id]).order != nil
-      redirect_to root_path
-    end
-  end
-
+    
   def set_item
     @item = Item.find(params[:item_id])
   end
 
+  def cheack_authority
+    if set_item.user_id == current_user.id || Item.find(params[:item_id]).order != nil
+      redirect_to root_path
+    end
+  end
+  
 end
