@@ -6,12 +6,10 @@ class OrdersController < ApplicationController
  
 
   def index
-    set_item
     @order_delivery = OrderDelivery.new
   end
 
   def create
-    set_item
     @order_delivery = OrderDelivery.new(delivery_params)
     if @order_delivery.valid?
       pay_item
